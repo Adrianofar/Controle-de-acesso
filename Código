@@ -1,0 +1,58 @@
+//Código utilizado no Tinkercad:
+
+//inclusão da biblioteca do LCD
+#include <LiquidCrystal.h>
+#include <Servo.h>
+
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
+Servo servo;
+int ledVermelho = 11;
+int ledVerde = 10;
+int botao1 = 8;
+int botao2 = 9;
+
+void setup()
+{
+	lcd.begin(16, 2);
+	lcd.setCursor(0, 0);
+  	servo.attach(12);
+  	pinMode(botao1, INPUT);
+  	pinMode(botao2, INPUT);
+  	pinMode(ledVermelho, OUTPUT);
+  	pinMode(ledVerde, OUTPUT);
+  	mensagemInicial();
+  	servo.write(0);
+}
+
+void loop()
+{ 	
+  	if(digitalRead(botao1) == 1) {
+      	lcd.clear();
+    	digitalWrite(ledVerde, HIGH);
+        lcd.print(" Cartao validado ");
+      	lcd.setCursor(0, 1);
+		lcd.print("  com sucesso ");
+      	servo.write(90);
+		delay(2000);
+      	digitalWrite(ledVerde, LOW);
+      	mensagemInicial();
+      	servo.write(0);
+    } else if(digitalRead(botao2) == 1 || ledVerde == 0) {
+      	lcd.clear();
+      	servo.write(0);
+    	digitalWrite(ledVermelho, HIGH);
+        lcd.print("Cartao Invalido ");
+		delay(2000);
+      	digitalWrite(ledVermelho, LOW);
+      	mensagemInicial();
+    }
+    
+}
+
+void mensagemInicial()
+{
+  lcd.clear();
+  lcd.print(" Aproxime o seu ");  
+  lcd.setCursor(0,1);
+  lcd.print("cartao no leitor");  
+}
